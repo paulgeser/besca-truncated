@@ -177,10 +177,16 @@ def get_raw(adata):
     return adata_raw
 
 
+<<<<<<< HEAD
 def get_means(adata, mycat):
     """Calculates average and fraction expression per category in adata.obs
+=======
+def get_ameans(adata,mycat):
+    """ Calculates average and fraction expression per category in adata.obs
+>>>>>>> 3538a39 (Adjusted get_means function back to mean of .raw)
     Based artihmetic mean expression and fraction cells expressing gene per category
-    (works on linear scale)
+    (works on linear scale). Assumes that values in .raw are log: will exponentiate, 
+    calculate mean and log back. 
     parameters
     ----------
     adata: AnnData
@@ -207,6 +213,7 @@ def get_means(adata, mycat):
             obs_bool.groupby(level=0).sum() / obs_bool.groupby(level=0).count()
         )
     except KeyError:
+<<<<<<< HEAD
         print(
             "Oops!  The adata object does not have the specified column. Options are: "
         )
@@ -221,6 +228,19 @@ def get_gmeans(adata, mycat):
     Based on an AnnData object and an annotation category (e.g. louvain) returns
     geometric mean expression and fraction cells expressing gene per category
     (works on log scale)
+=======
+        print("Oops!  The adata object does not have the specified column. Options are: ")
+        print (list(adata.obs.columns))
+        average_obs=None
+        fraction_obs=None
+    return(average_obs, fraction_obs)
+
+def get_means(adata,mycat):
+    """ Calculates average and fraction expression per category in adata.obs
+    Based on an AnnData object and an annotation category (e.g. louvain) returns 
+    geometric mean expression if .raw values are log as it simply calculates mean
+    of whatever values are stored in .raw. Also returns fraction cells expressing gene per category. 
+>>>>>>> 3538a39 (Adjusted get_means function back to mean of .raw)
     parameters
     ----------
     adata: AnnData
