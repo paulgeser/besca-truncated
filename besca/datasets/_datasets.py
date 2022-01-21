@@ -10,7 +10,7 @@ import pkg_resources
 from scanpy import read
 
 
-def check_dl( filename, url):
+def check_dl(filename, url):
     """try to obtain dataset while checking url
       ----------
     filename: `str`
@@ -24,12 +24,12 @@ def check_dl( filename, url):
         Annotated data matrix.
     """
     try:
-        adata = read(filename, backup_url = url, cache= False)
+        adata = read(filename, backup_url=url, cache=False)
     except Exception:
-        raise URLError(f'\n\n\n {filename} could not be downloaded from {url}; \n Please download it manually and store it in your besca installation: besca/datasets/data/')
+        raise URLError(
+            f"\n\n\n {filename} could not be downloaded from {url}; \n Please download it manually and store it in your besca installation: besca/datasets/data/"
+        )
     return adata
-
-
 
 
 def Baron2016_raw():
@@ -52,8 +52,11 @@ def Baron2016_raw():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/baron_raw.h5ad')
-    adata = check_dl( filename, url ='https://zenodo.org/record/3968315/files/baron2016_raw.h5ad?download=1')
+    filename = pkg_resources.resource_filename("besca", "datasets/data/baron_raw.h5ad")
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3968315/files/baron2016_raw.h5ad?download=1",
+    )
     return adata
 
 
@@ -77,13 +80,18 @@ def Baron2016_processed():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/baron_processed.h5ad')
-    adata = check_dl( filename, url = 'https://zenodo.org/record/3968315/files/baron2016_processed.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/baron_processed.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3968315/files/baron2016_processed.h5ad?download=1",
+    )
     return adata
 
 
 def Granja2019_citeSeq():
-    """Citeseq table from GSE139369 mixed-phenotype acute leukemia; healthy sample only
+    """Citeseq raw data from GSE139369 mixed-phenotype acute leukemia; healthy sample only
       [Granja JM, Klemm S, McGinnis LM, Kathiria AS et al. Single-cell multiomic analysis identifies regulatory programs in mixed-phenotype acute leukemia. Nat Biotechnol 2019 Dec;37(12):1458-1465. PMID: 31792411.]
 
     Returns
@@ -98,13 +106,15 @@ def Granja2019_citeSeq():
     >>> protein_table
 
     """
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/scADT_Healthy_counts.csv')
-    urllib.request.urlretrieve ("https://zenodo.org/record/4419527/files/scADT_Healthy_counts.csv?download=1", filename)
-    citeSeq  = pandas.read_csv(filename, sep = '\t')
-    return citeSeq
 
-
-
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/Granja2019_adt_raw.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/4419527/files/Granja2019_adt_raw.h5ad?download=1",
+    )
+    return adata
 
 
 def Granja2019_raw():
@@ -126,10 +136,14 @@ def Granja2019_raw():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/Granja2019_raw.h5ad')
-    adata = check_dl( filename, url = 'https://zenodo.org/record/4419527/files/Granja2019_raw.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/Granja2019_raw.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/4419527/files/Granja2019_raw.h5ad?download=1",
+    )
     return adata
-
 
 
 def Granja2019_processed():
@@ -153,11 +167,14 @@ def Granja2019_processed():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/Granja2019_annotated.h5ad')
-    adata = check_dl( filename, url = 'https://zenodo.org/record/4419527/files/Granja2019_annotated.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/Granja2019_annotated.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/4419527/files/Granja2019_annotated.h5ad?download=1",
+    )
     return adata
-
-
 
 
 def Haber2017_raw():
@@ -180,8 +197,11 @@ def Haber2017_raw():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/haber_raw.h5ad')
-    adata = check_dl( filename, url ='https://zenodo.org/record/3935782/files/haber_raw.h5ad?download=1')
+    filename = pkg_resources.resource_filename("besca", "datasets/data/haber_raw.h5ad")
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3935782/files/haber_raw.h5ad?download=1",
+    )
     return adata
 
 
@@ -205,10 +225,43 @@ def Haber2017_processed():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/haber_processed.h5ad')
-    adata = check_dl( filename, url = 'https://zenodo.org/record/4447233/files/haber_processed.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/haber_processed.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/4447233/files/haber_processed.h5ad?download=1",
+    )
     return adata
 
+
+def Kotliarov2020_citeSeq():
+    """Raw ADT counts from Kotliarov et al. Broad immune activation underlies shared set point signatures for vaccine responsiveness in healthy individuals and disease activity in patients with lupus. Nat Med. 2020
+
+    The data consists of raw ADT expression and CITE-seq counts of single cells from 53,201 single cells from healthy high and low influenza vaccination responders.
+
+    Returns
+    -------
+    adata : :class:`~anndata.AnnData`
+        Raw data matrix.
+
+    Example
+    -------
+
+    >>> import besca as bc
+    >>> adata = bc.datasets.Kotliarov2020_citeseq()
+    >>> adata
+
+    """
+
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/kotliarov_adt_raw.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/4350119/files/kotliarov_adt_raw.h5ad?download=1",
+    )
+    return adata
 
 
 def Kotliarov2020_raw():
@@ -230,10 +283,14 @@ def Kotliarov2020_raw():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/Kotliarov2020_raw.h5ad')
-    adata = check_dl( filename, url ='https://zenodo.org/record/3938290/files/Kotliarov2020_raw.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/Kotliarov2020_raw.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3938290/files/Kotliarov2020_raw.h5ad?download=1",
+    )
     return adata
-
 
 
 def Kotliarov2020_processed():
@@ -255,10 +312,14 @@ def Kotliarov2020_processed():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/Kotliarov2020_processed_citeseq_merged_annotated.h5ad')
-    adata = check_dl( filename, url = 'https://zenodo.org/record/3938290/files/Kotliarov2020_processed_citeseq_merged_annotated.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/Kotliarov2020_processed_citeseq_merged_annotated.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3938290/files/Kotliarov2020_processed_citeseq_merged_annotated.h5ad?download=1",
+    )
     return adata
-
 
 
 def Lee2020_raw():
@@ -281,8 +342,13 @@ def Lee2020_raw():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/lee2020_raw.h5ad')
-    adata = check_dl( filename, url ='https://zenodo.org/record/3967538/files/lee2020_raw.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/lee2020_raw.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3967538/files/lee2020_raw.h5ad?download=1",
+    )
     return adata
 
 
@@ -306,11 +372,14 @@ def Lee2020_processed():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/lee2020_processed.h5ad')
-    adata = check_dl( filename, url = 'https://zenodo.org/record/3967538/files/lee2020_processed.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/lee2020_processed.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3967538/files/lee2020_processed.h5ad?download=1",
+    )
     return adata
-
-
 
 
 def Martin2019_raw():
@@ -333,8 +402,13 @@ def Martin2019_raw():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/Martin2019_raw.h5ad')
-    adata = check_dl( filename, url ='https://zenodo.org/record/3862132/files/Martin2019_raw.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/Martin2019_raw.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3862132/files/Martin2019_raw.h5ad?download=1",
+    )
     return adata
 
 
@@ -358,8 +432,13 @@ def Martin2019_processed():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/Martin2019_processed.h5ad')
-    adata = check_dl( filename, url = 'https://zenodo.org/record/3862132/files/Martin2019_processed.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/Martin2019_processed.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3862132/files/Martin2019_processed.h5ad?download=1",
+    )
     return adata
 
 
@@ -386,9 +465,13 @@ def pbmc3k_raw():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/pbmc3k_raw.h5ad')
-    adata =  check_dl( filename, url = 'https://zenodo.org/record/4441679/files/pbmc3k_raw.h5ad?download=1')
+    filename = pkg_resources.resource_filename("besca", "datasets/data/pbmc3k_raw.h5ad")
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/4441679/files/pbmc3k_raw.h5ad?download=1",
+    )
     return adata
+
 
 def pbmc3k_filtered():
     """3k PBMCs from 10x Genomics filtered.
@@ -409,9 +492,15 @@ def pbmc3k_filtered():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/pbmc3k_filtered.h5ad')
-    adata = check_dl( filename, url='https://zenodo.org/record/4441679/files/pbmc3k_filtered.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/pbmc3k_filtered.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/4441679/files/pbmc3k_filtered.h5ad?download=1",
+    )
     return adata
+
 
 def pbmc3k_processed():
     """3k PBMCs from 10x Genomics processed
@@ -433,10 +522,14 @@ def pbmc3k_processed():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/pbmc3k_processed.h5ad')
-    adata = check_dl(filename, url='https://zenodo.org/record/4441679/files/pbmc3k_processed.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/pbmc3k_processed.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/4441679/files/pbmc3k_processed.h5ad?download=1",
+    )
     return adata
-
 
 
 def Peng2019_raw():
@@ -459,8 +552,13 @@ def Peng2019_raw():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/StdWf1_PRJCA001063_CRC_besca2.raw.h5ad')
-    adata = check_dl( filename, url ='https://zenodo.org/record/3969339/files/StdWf1_PRJCA001063_CRC_besca2.raw.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/StdWf1_PRJCA001063_CRC_besca2.raw.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3969339/files/StdWf1_PRJCA001063_CRC_besca2.raw.h5ad?download=1",
+    )
     return adata
 
 
@@ -483,10 +581,14 @@ def Peng2019_processed():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/StdWf1_PRJCA001063_CRC_besca2.annotated.h5ad')
-    adata = check_dl( filename, url = 'https://zenodo.org/record/3969339/files/StdWf1_PRJCA001063_CRC_besca2.annotated.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/StdWf1_PRJCA001063_CRC_besca2.annotated.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3969339/files/StdWf1_PRJCA001063_CRC_besca2.annotated.h5ad?download=1",
+    )
     return adata
-
 
 
 def Segerstolpe2016_processed():
@@ -508,12 +610,14 @@ def Segerstolpe2016_processed():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/Segerstolpe2016_processed.h5ad')
-    adata = check_dl(filename, url = 'https://zenodo.org/record/3928276/files/Segerstolpe2016_processed.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/Segerstolpe2016_processed.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3928276/files/Segerstolpe2016_processed.h5ad?download=1",
+    )
     return adata
-
-
-
 
 
 def Smillie2019_raw():
@@ -535,8 +639,13 @@ def Smillie2019_raw():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/Smillie2019_raw.h5ad')
-    adata = check_dl(filename, url='https://zenodo.org/record/3960617/files/Smillie2019_raw.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/Smillie2019_raw.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3960617/files/Smillie2019_raw.h5ad?download=1",
+    )
     return adata
 
 
@@ -561,14 +670,18 @@ def Smillie2019_processed():
 
     """
 
-    filename = pkg_resources.resource_filename('besca', 'datasets/data/Smillie2019_processed.h5ad')
-    adata = check_dl(filename, url='https://zenodo.org/record/3960617/files/Smillie2019_processed.h5ad?download=1')
+    filename = pkg_resources.resource_filename(
+        "besca", "datasets/data/Smillie2019_processed.h5ad"
+    )
+    adata = check_dl(
+        filename,
+        url="https://zenodo.org/record/3960617/files/Smillie2019_processed.h5ad?download=1",
+    )
     return adata
 
 
-
 def load_immune_signatures(refined=True):
-    """ This function load immune signatures provided
+    """This function load immune signatures provided
     within BESCA.
 
     Parameters
@@ -591,14 +704,18 @@ def load_immune_signatures(refined=True):
     >>> immune_sig
     """
     if refined:
-        filename = pkg_resources.resource_filename('besca', 'datasets/genesets/HumanCD45p_scseqCMs6.gmt')
+        filename = pkg_resources.resource_filename(
+            "besca", "datasets/genesets/HumanCD45p_scseqCMs6.gmt"
+        )
     else:
-        filename = pkg_resources.resource_filename('besca', 'datasets/genesets/Immune.gmt')
-    file = open(filename, 'r')
+        filename = pkg_resources.resource_filename(
+            "besca", "datasets/genesets/Immune.gmt"
+        )
+    file = open(filename, "r")
     Lines = file.readlines()
     mymarkers = {}
     for line in Lines:
-        ll = line.strip().split('\t')
-        mymarkers[ll[0]] = ll[2:len(ll)]
+        ll = line.strip().split("\t")
+        mymarkers[ll[0]] = ll[2 : len(ll)]
     file.close()
     return mymarkers
