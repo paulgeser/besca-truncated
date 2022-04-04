@@ -1,6 +1,5 @@
 import os
 import sys
-import pytest
 
 import seaborn as sns
 from matplotlib.pyplot import subplots, tight_layout
@@ -20,7 +19,8 @@ def celllabel_quant_boxplot(
     condition_identifier,
     plot_percentage=True,
     condition_order=None,
-    figsize=(8,4),
+    myh=4,
+    myw=8,
     mypal="Paired",
 ):
     """generate a box and whisker plot with overlayed swarm plot of celltype abundances
@@ -42,8 +42,10 @@ def celllabel_quant_boxplot(
         boolian indicating if the percentages or the total counts should be plotted
     condition_order: `list` | default = None
         list with the order in which the conditions should be plotted, for consistency
-    figsize: (width, height) or None | default = (8,4)
-        optional parameter to define the figure size of the plot that is to be generated
+    myh: `integer` | default = 4
+        height of the figure
+    myw: `integer` | default = 8
+        width of the figure
     mypal: `string` | default = "Paired"
         color palette for boxplots e.g. Paired, Blues_d
 
@@ -81,9 +83,8 @@ def celllabel_quant_boxplot(
     # create a new instance of a figure
     fig, (ax1) = subplots(1)
     fig.tight_layout()
-    if figsize is not None:
-        fig.set_figheight(figsize[1])
-        fig.set_figwidth(figsize[0])
+    fig.set_figheight(myh)
+    fig.set_figwidth(myw)
 
     # format the plot
     sns.set_style("white")
@@ -125,8 +126,8 @@ def celllabel_quant_boxplot(
     return fig
 
 
-def celllabel_quant_stackedbar(adata, subset_variable, count_variable="celltype", figsize=(8,4)):
-    """Generate a stacked bar plot of the percentage of labelcounts within each AnnData subset
+def celllabel_quant_stackedbar(adata, subset_variable, count_variable="celltype", plot_percentages=True, myh=4, myw=8):
+    """Generate a stacked bar plot of the percentage or absolute of labelcounts within each AnnData subset
 
     parameters
     ----------
@@ -136,46 +137,54 @@ def celllabel_quant_stackedbar(adata, subset_variable, count_variable="celltype"
         string identifying the column name of adata.obs along which the AnnData object should be subsetted
     count_variable: `str` | default  = 'celltype'
         string identiyfing the column of adata.obs containing the labels to be counted
-    figsize: (width, height) or None | default = (8,4)
-        optional parameter to define the figure size of the plot that is to be generated
-
+    plot_percentages: `bool` | default = True
+        boolian indicating if the percentages or the total counts should be plotted
+    myh: `integer` | default = 4
+        height of the figure
+    myw: `integer` | default = 8
+        width of the figure
+            
     returns
     -------
     Figure
 
     Example
     -------
+
     >>> import besca as bc
-    >>> adata = bc.datasets.simulated_Kotliarov2020_processed()
+    >>> adata = bc.datasets.Kotliarov2020_processed()
     >>> adata.obs   = adata.obs.astype( {'batch' :  'category'})
     >>> fig = bc.pl.celllabel_quant_stackedbar(adata, count_variable = 'leiden', subset_variable = 'donor')
 
     .. plot::
+
         >>> import besca as bc
-        >>> adata = bc.datasets.simulated_Kotliarov2020_processed()
+        >>> adata = bc.datasets.Kotliarov2020_processed()
         >>> adata.obs   = adata.obs.astype( {'batch' :  'category'})
         >>> fig = bc.pl.celllabel_quant_stackedbar(adata, count_variable = 'leiden', subset_variable = 'batch')
     """
     counts_celltype = count_occurrence_subset(
         adata, subset_variable, count_variable=count_variable, return_percentage=False
     )
-    percentages = DataFrame(
+    values = DataFrame(
         index=natsorted(counts_celltype.index.tolist()),
         columns=counts_celltype.columns.tolist(),
     )
 
     for cell in counts_celltype.index.tolist():
         data = counts_celltype.loc[cell].tolist()
-        percentage = [x / sum(data) for x in data]
-        percentages.loc[cell] = percentage
-    fig = None
-    if figsize is not None:
-        fig = percentages.plot(kind="bar", stacked=True, figsize=(figsize[0], figsize[1]))
-    else:
-        fig = percentages.plot(kind="bar", stacked=True, figsize=(8, 4))
-    fig.set_ylabel("percentage")
-    fig.legend(bbox_to_anchor=(1, 1))
+        if plot_percentages:
+            data = [x / sum(data) for x in data]
+        values.loc[cell] = data
 
+    fig = values.plot(kind="bar", stacked=True, figsize=(myw, myh))
+    if plot_percentages:
+        fig.set_ylabel("percentage")
+    else:
+        fig.set_ylabel("number of cells")
+            
+    fig.legend(bbox_to_anchor=(1, 1))
+     
     # fix figure axis to include legend
     tight_layout()
 
